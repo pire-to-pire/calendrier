@@ -6,6 +6,17 @@ from datetime import *
 
 
 def calendrier():
+    class Color:
+        PURPLE = '\033[95m'
+        CYAN = '\033[96m'
+        DARKCYAN = '\033[36m'
+        BLUE = '\033[94m'
+        GREEN = '\033[92m'
+        YELLOW = '\033[93m'
+        RED = '\033[91m'
+        BOLD = '\033[1m'
+        UNDERLINE = '\033[4m'
+        END = '\033[0m'
     dateactuelle = str(date.today())
     nommoisdico = {"01": "Janvier", "02": "Février", "03": "Mars", "04": "Avril", "05": "Mai", "06": "Juin",
                    "07": "Juillet", "08": "Août", "09": "Septembre", "10": "Octobre", "11": "Novembre",
@@ -18,7 +29,7 @@ def calendrier():
     mois = mois.center(20)
     jour1annee = premierjourannee(dateactuelleliste[0])
     jour1mois = premierjourmois(dateactuelleliste[0], dateactuelleliste[1], jour1annee)
-    debut = (int(jour1mois))-1
+    debut = (int(jour1mois)) - 1
     compteurdecolonnes = debut
     print(mois)
     print("")
@@ -26,7 +37,10 @@ def calendrier():
     for vides in range(0, debut):
         print(end="   ")
     for loop in range(1, taille + 1):
-        print(str(loop).zfill(2), end=" ")
+        if dateactuelleliste[2] != (str(loop)).zfill(2):
+            print(str(loop).zfill(2), end=" ")
+        else:
+            print(Color.BLUE + str(loop).zfill(2) + Color.END, end=" ")
         compteurdecolonnes += 1
         if compteurdecolonnes == 7 and loop != taille:
             compteurdecolonnes = 0
@@ -35,7 +49,7 @@ def calendrier():
     print("Lu Ma Me Je Ve Sa Di")
 
 
-def anneeBissextile(a):
+def annee_bissextile(a):
     a = float(a)
     b = a / 4
     c = round(a / 4)
@@ -58,7 +72,7 @@ def anneeBissextile(a):
 def premierjourannee(annee):
     x = 0
     annee = float(annee)
-    if anneeBissextile(annee) == False:
+    if annee_bissextile(annee) == False:
         if type(annee / 100) != int or type(annee - 5 / 100) != int or type(annee - 1 / 100) != int or type(
                 annee - 9 / 100) != int:
             while (2000 + 28 * x) - annee > 28 or (2000 + 28 * x) - annee < 0:
@@ -135,7 +149,7 @@ def premierjourannee(annee):
 def premierjourmois(annee, mois, jour1annee):
     jour = 0
     jour1annee = int(jour1annee)
-    if anneeBissextile(annee):
+    if annee_bissextile(annee):
         if mois == "01":
             jour = jour1annee
         if mois == "02":
